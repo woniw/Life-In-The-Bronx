@@ -7,10 +7,10 @@ handedness_result = generateHandedness()
 class_result = generateClass()
 
 def CheckJoinedUser(data: dict, user_id: str):
-    if user_id in data:
+    if user_id in data.get("USERS", {}):
         print("USER IS ALREADY ADDED")
         return True
-    elif user_id not in data:
+    else:
         print("USER IS NOT ADDED")
         return False
 
