@@ -10,9 +10,7 @@ from json_functions import load_json
 from utils.checkUser import CheckJoinedUser
 from utils.checkUser import AddUser
 
-data = load_json("data.json", default={"USERS": {}})
-if data is None:
-    data = {"USERS": {}}
+data = load_json("data.json")
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
