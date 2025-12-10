@@ -1,12 +1,18 @@
 import random 
 
-def generateClass():
-    classes = ["Fighter", "Tank", "Fatty"]
-    class_generator = random.choices(classes)
+def generatedClass():
+    low = 1
+    high = 3
+    class_choice = random.randint(low, high)
 
-    return class_generator
+    if class_choice == 1:
+        return "Fighter"
+    elif class_choice == 2:
+        return "Tank"
+    elif class_choice == 3:
+        return "Fatty"
 
-def generateHandedness():
+def generatedHandedness():
     handedness = {
         "right": 100,
         "left": 40,
@@ -20,4 +26,5 @@ def generateHandedness():
         k=1
     )[0]
 
+    print(f"Random handedness, generated: {handedness_generator}")
     return handedness_generator
