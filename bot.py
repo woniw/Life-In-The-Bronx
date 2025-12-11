@@ -13,8 +13,6 @@ from utils.DisplayStat import showStat
 
 from utils.adminCommands import addMoney
 from utils.adminCommands import setMoney
-from utils.adminCommands import setClass
-
 
 from utils.GenerateStats import generatedClass
 from utils.GenerateStats import generatedHandedness
@@ -163,36 +161,6 @@ async def add_money(interaction: discord.Interaction, value: int, target: discor
 
         await interaction.response.send_message(embed=set_money_embed)
 
-@bot.tree.command(name="set_class", description="change a users class (admin only)")
-async def set_class(interaction: discord.Interaction, setting_class: str, target: discord.Member):
-    user_id = str(interaction.user.id)
-    target_id = str(target.id)
-
-    print("")
-    print("| --- LOG --- |")
-    print(f"   USER ID: {user_id}")
-    print(f"   TARGET ID: {target_id}")
-    
-    result, new_target_class, target_class = setClass(data=data, user_id=user_id, setting_class=setting_class, target=target_id)
-    print(f"- SET CLASS FUNCTION, RETURNED: {result}")
-    print(f"- SET CLASS FUNCTION, RETURNED: {new_target_class}")
-    print(f"- SET CLASS FUNCTION, RETURNED: {target_class}")
-
-    if result == "Invalid Target":
-        await interaction.response.send_message("Target Hasn't Joined The Bronx💔")
-    elif result == "Invalid Permissions":
-        await interaction.response.send_message("You dont have permissions to use this command")
-    elif result == "Invalid Class":
-        await interaction.response.send_message("That class does NOT exist💔")
-    elif result == "Successfull Transaction":
-        save_json(data, "data.json")
-        set_class_embed = discord.Embed(
-            title="**Class has been set**",
-            description=f"💸{target}s class has been set to {setting_class}",
-            color=discord.Color.green(),
-        )
-
-        await interaction.response.send_message(embed=set_class_embed)
 
 if __name__ == "__main__":
     if TOKEN is None:
