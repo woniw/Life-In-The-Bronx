@@ -5,6 +5,8 @@ def save_json(data, filename):
     try:
         with open(filename, "w") as f:
             json.dump(data, f, indent=4)
+            print("|--- JSON LOG ---|")
+            print(" - **everything has been saved**")
     except Exception as e:
         print(f"Error saving JSON to {filename}: {e}")
 

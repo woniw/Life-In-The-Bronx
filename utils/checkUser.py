@@ -1,36 +1,43 @@
-from utils.GenerateStats import generateHandedness
-from utils.GenerateStats import generateClass
-from utils.variables import default_health
 from utils.Allitems import weapons
+from utils.variables import default_health
+from utils.variables import tank_health
 
-handedness_result = generateHandedness()
-class_result = generateClass()
 
 def CheckJoinedUser(data: dict, user_id: str):
-    if user_id in data:
+    if user_id in data["USERS"]:
         print("USER IS ALREADY ADDED")
         return True
-    elif user_id not in data:
+    elif user_id not in data["USERS"]:
         print("USER IS NOT ADDED")
         return False
 
-def AddUser(data: dict, user_id: str):
-    if class_result == "Tank":
+def AddUser(data: dict, user_id: str, generated_handedness: str, generated_class: str):
+    if generated_class == "Tank":
+        print(f"TANK CLASS HAS BEEN GIVEN TO {user_id}")
+        print(f"{tank_health} HAS BEEN GIVEN TO {user_id}")
         data["USERS"][user_id] = {
-            "health": default_health + 15,
+            "class": generated_class,
+            "health": tank_health,
             "balance": 0,
-            "handedness": handedness_result,
+            "handedness": generated_handedness,
             "equipped": weapons["fists"]["name"],
             "damage": weapons["fists"]["damage"],
             "inventory": []
         }
     else:
+        print(f"{generated_class} CLASS HAS BEEN GIVEN TO {user_id}")
         data["USERS"][user_id] = {
+            "class": generated_class,
             "health": default_health,
             "balance": 0,
-            "handedness": handedness_result,
+            "handedness": generated_handedness,
             "equipped": weapons["fists"],
             "damage": weapons["fists"]["damage"],
             "inventory": []
         }
+
+def checkUserStat(data: dict, user_id: str, stat):
+    user_stat_result = data["USERS"][user_id][stat]
+    return user_stat_result
+
 
