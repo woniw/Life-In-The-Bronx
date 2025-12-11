@@ -1,24 +1,26 @@
-weapons = {
+all_items = {
     #weapon and damage
     "fists": {
         "name": "fists",
         "damage": 5,
         "description": "Description: Everyone has them (unless you dont, then im sorry) \n Damage: 5",
-        "durability": 999999999
+        "durability": 999999999,
+        "type": "weapon"
     },
 
     "stick": {
         "name": "stick",
         "damage": 7,
         "description": "Description: Can be found anywhere, usually on trees \n Damage: 7",
-        "durability": 5
+        "durability": 5,
+        "type": "weapon"
     },
 
     "dull Knife": {
         "name": "dull knife",
         "damage": 12,
         "description": "Description: Could be sharpened better \n Damage: 12",
-        "durability": 7
+        "durability": 7,
+        "type": "weapon"
     }
-
 }

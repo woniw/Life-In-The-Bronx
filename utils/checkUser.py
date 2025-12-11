@@ -1,4 +1,4 @@
-from utils.Allitems import weapons
+from utils.Allitems import all_items
 from utils.variables import default_health
 from utils.variables import tank_health
 
@@ -20,8 +20,8 @@ def AddUser(data: dict, user_id: str, generated_handedness: str, generated_class
             "health": tank_health,
             "balance": 0,
             "handedness": generated_handedness,
-            "equipped": weapons["fists"]["name"],
-            "damage": weapons["fists"]["damage"],
+            "equipped": all_items["fists"]["name"],
+            "damage": all_items["fists"]["damage"],
             "inventory": []
         }
     else:
@@ -31,8 +31,8 @@ def AddUser(data: dict, user_id: str, generated_handedness: str, generated_class
             "health": default_health,
             "balance": 0,
             "handedness": generated_handedness,
-            "equipped": weapons["fists"],
-            "damage": weapons["fists"]["damage"],
+            "equipped": all_items["fists"],
+            "damage": all_items["fists"]["damage"],
             "inventory": []
         }
 

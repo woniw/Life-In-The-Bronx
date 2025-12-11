@@ -11,6 +11,7 @@ from utils.checkUser import CheckJoinedUser
 from utils.checkUser import AddUser
 
 from utils.DisplayStat import showStat
+from utils.DisplayStat import showItemDescription
 
 from utils.adminCommands import addMoney
 from utils.adminCommands import setMoney
@@ -67,7 +68,7 @@ async def join(interaction: discord.Interaction):
         await interaction.response.send_message(embed=joining_embed)
 
 @bot.tree.command(name="check_stat", description="Check a stat!")
-async def check(interaction: discord.Interaction, stat: str):
+async def check_stat(interaction: discord.Interaction, stat: str):
     user_id = str(interaction.user.id)
     User_Result = CheckJoinedUser(data=data, user_id=user_id)
 
@@ -96,11 +97,21 @@ async def check(interaction: discord.Interaction, stat: str):
     else:
         await interaction.response.send_message(f"You Have Not Joined The Bronx, Please us /join")
 
-#@bot.tree.command(name="check_description", description="check a certain items description")
-#async def check_description(requested_item: str):
+@bot.tree.command(name="check_description", description="See the description of a certain item")
+async def check_description(interaction: discord.Interaction, item: str):
+    response_phrase = showItemDescription(requested_item_description=item)
 
-#setMoney
+    if response_phrase == "Item Doesnt exist":
+        await interaction.response.send_message("https://tenor.com/view/shrug-shoulders-spongebob-gif-19763306")
+    else:
+        response_phrase, item_type = showItemDescription(requested_item_description=item)
+        item_desciption_embed = discord.Embed(
+            title="Item",
+            description=f"Item name: **{item}** \n Description: {response_phrase} \n Type: {item_type}",
+            color=discord.Color.blue()
+        )
 
+        await interaction.response.send_message(embed=item_desciption_embed)
 
 #! admin commands
 @bot.tree.command(name="add_money", description="add money to a users balance (admin only)")

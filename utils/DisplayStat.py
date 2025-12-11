@@ -1,12 +1,21 @@
 from utils.variables import player_stats
-from utils.Allitems import weapons
+from utils.Allitems import all_items
 
 def showItemDescription(requested_item_description: str):
-    if requested_item_description in weapons:
-        item_description = weapons[requested_item_description]["description"]
+    if requested_item_description in all_items:
+        print("-- ITEM WAS FOUND --")
+        item_description = all_items[requested_item_description]["description"]
+        item_type = all_items[requested_item_description]["type"]
 
-        return item_description
-    elif requested_item_description not in weapons:
+        print("")
+        print("| --- ITEM LOG --- |")
+        print(f"    Item Name: {requested_item_description}")
+        print(f"    Item description: {item_description}")
+        print(f"    Item type: {item_type}")
+        return item_description, item_type
+    
+    elif requested_item_description not in all_items:
+        print("-- ITEM WAS NOT FOUND --")
         return "Item Doesnt exist"
 
 
