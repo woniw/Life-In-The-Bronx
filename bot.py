@@ -10,7 +10,11 @@ from json_functions import load_json
 from utils.checkUser import CheckJoinedUser
 from utils.checkUser import AddUser
 from utils.DisplayStat import showStat
+
 from utils.adminCommands import addMoney
+from utils.adminCommands import setMoney
+from utils.adminCommands import setClass
+
 
 from utils.GenerateStats import generatedClass
 from utils.GenerateStats import generatedHandedness
@@ -95,27 +99,100 @@ async def check(interaction: discord.Interaction, stat: str):
 #@bot.tree.command(name="check_description", description="check a certain items description")
 #async def check_description(requested_item: str):
 
+#setMoney
 
 
 #! admin commands
 @bot.tree.command(name="add_money", description="add money to a users balance (admin only)")
 async def add_money(interaction: discord.Interaction, value: int, target: discord.Member):
-    user_id = interaction.user.id
+    user_id = str(interaction.user.id)
+    target_id = str(target.id)
 
-    result = addMoney(data=data, user_id=user_id, amount=value, target=target)
-    save_json(data, "data.json")
+    print("")
+    print("| --- LOG --- |")
+    print(f"   USER ID: {user_id}")
+    print(f"   TARGET ID: {target_id}")
+    
+    result, new_target_balance, target_balance = addMoney(data=data, user_id=user_id, amount=value, target=target_id)
+    print(f"- ADD MONEY FUNCTION, RETURNED: {result}")
+    print(f"- ADD MONEY FUNCTION, RETURNED: {new_target_balance}")
+    print(f"- ADD MONEY FUNCTION, RETURNED: {target_balance}")
 
     if result == "Invalid Target":
         await interaction.response.send_message("Target Hasn't Joined The Bronx💔")
     elif result == "Invalid Permissions":
         await interaction.response.send_message("You dont have permissions to use this command")
+
     elif result == "Successfull Transaction":
+        save_json(data, "data.json")
         add_money_embed = discord.Embed(
             title="**🤑 Cha-ching, Money added! 🤑**",
-            description=f"💸{target.mention} has been given ${value} from {interaction.user.mention}💸",
+            description=f"💸{target} has been given ${value} from {interaction.user.mention}💸",
             color=discord.Color.green(),
         )
+
         await interaction.response.send_message(embed=add_money_embed)
+
+@bot.tree.command(name="set_money", description="set a users balance to something (admin only)")
+async def add_money(interaction: discord.Interaction, value: int, target: discord.Member):
+    user_id = str(interaction.user.id)
+    target_id = str(target.id)
+
+    print("")
+    print("| --- LOG --- |")
+    print(f"   USER ID: {user_id}")
+    print(f"   TARGET ID: {target_id}")
+    
+    result, new_target_balance, target_balance = setMoney(data=data, user_id=user_id, amount=value, target=target_id)
+    print(f"- SET MONEY FUNCTION, RETURNED: {result}")
+    print(f"- SET MONEY FUNCTION, RETURNED: {new_target_balance}")
+    print(f"- SET MONEY FUNCTION, RETURNED: {target_balance}")
+
+    if result == "Invalid Target":
+        await interaction.response.send_message("Target Hasn't Joined The Bronx💔")
+    elif result == "Invalid Permissions":
+        await interaction.response.send_message("You dont have permissions to use this command")
+
+    elif result == "Successfull Transaction":
+        save_json(data, "data.json")
+        set_money_embed = discord.Embed(
+            title="**🤑 Money has been set 🤑**",
+            description=f"💸{target} has been set to ${value}💸",
+            color=discord.Color.green(),
+        )
+
+        await interaction.response.send_message(embed=set_money_embed)
+
+@bot.tree.command(name="set_class", description="change a users class (admin only)")
+async def set_class(interaction: discord.Interaction, setting_class: str, target: discord.Member):
+    user_id = str(interaction.user.id)
+    target_id = str(target.id)
+
+    print("")
+    print("| --- LOG --- |")
+    print(f"   USER ID: {user_id}")
+    print(f"   TARGET ID: {target_id}")
+    
+    result, new_target_class, target_class = setClass(data=data, user_id=user_id, setting_class=setting_class, target=target_id)
+    print(f"- SET CLASS FUNCTION, RETURNED: {result}")
+    print(f"- SET CLASS FUNCTION, RETURNED: {new_target_class}")
+    print(f"- SET CLASS FUNCTION, RETURNED: {target_class}")
+
+    if result == "Invalid Target":
+        await interaction.response.send_message("Target Hasn't Joined The Bronx💔")
+    elif result == "Invalid Permissions":
+        await interaction.response.send_message("You dont have permissions to use this command")
+    elif result == "Invalid Class":
+        await interaction.response.send_message("That class does NOT exist💔")
+    elif result == "Successfull Transaction":
+        save_json(data, "data.json")
+        set_class_embed = discord.Embed(
+            title="**Class has been set**",
+            description=f"💸{target}s class has been set to {setting_class}",
+            color=discord.Color.green(),
+        )
+
+        await interaction.response.send_message(embed=set_class_embed)
 
 if __name__ == "__main__":
     if TOKEN is None:
