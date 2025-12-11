@@ -9,8 +9,7 @@ from json_functions import load_json
 
 from utils.checkUser import CheckJoinedUser
 from utils.checkUser import AddUser
-<<<<<<< HEAD
-=======
+
 from utils.DisplayStat import showStat
 
 from utils.adminCommands import addMoney
@@ -18,7 +17,7 @@ from utils.adminCommands import setMoney
 
 from utils.GenerateStats import generatedClass
 from utils.GenerateStats import generatedHandedness
->>>>>>> a306bfae4dce2dbeb619b809ed4db71e0e194532
+
 
 data = load_json("data.json")
 
