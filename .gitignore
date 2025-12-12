@@ -45,3 +45,5 @@ env/
 
 # Cython debug symbols
 cython_debug/
+
+cooldown_template.py

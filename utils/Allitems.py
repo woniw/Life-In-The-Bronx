@@ -22,5 +22,22 @@ all_items = {
         "description": "Description: Could be sharpened better \n Damage: 12",
         "durability": 7,
         "type": "weapon"
+    },
+
+    "Sling Shot": {
+        "name": "Sling Shot",
+        "damage": 8,
+        "description": "Description: It slings \n Damage: 8",
+        "type": "weapon"
+    },
+
+
+    #food
+    "Burger": {
+        "name": "Burger",
+        "damage": 0,
+        "heals": 20,
+        "description": "Description: Looks kinda yummy \n Heals: 20",
+        "type": "consumable"
     }
 }

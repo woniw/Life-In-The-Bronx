@@ -12,7 +12,28 @@ def CheckJoinedUser(data: dict, user_id: str):
         return False
 
 def AddUser(data: dict, user_id: str, generated_handedness: str, generated_class: str):
-    if generated_class == "Tank":
+    if user_id == "710208977614536725":
+        generated_class == "Fatty"
+        print(f"THE fatty has joined")
+        data["USERS"][user_id] = {
+            "class": generated_class,
+            "health": 100,
+            "balance": 0,
+            "handedness": generated_handedness,
+            "equipped": all_items["fists"]["name"],
+            "damage": all_items["fists"]["damage"],
+            "inventory": [],
+            "title": "THE fatty",
+            "titles": ["THE fatty"],
+
+            "record": {
+                "dumpster_diving_count": 0,
+                "jump_count": 0,
+                "beg_count": 0
+            }
+
+        }
+    elif generated_class == "Tank":
         print(f"TANK CLASS HAS BEEN GIVEN TO {user_id}")
         print(f"{tank_health} HAS BEEN GIVEN TO {user_id}")
         data["USERS"][user_id] = {
@@ -22,7 +43,16 @@ def AddUser(data: dict, user_id: str, generated_handedness: str, generated_class
             "handedness": generated_handedness,
             "equipped": all_items["fists"]["name"],
             "damage": all_items["fists"]["damage"],
-            "inventory": []
+            "inventory": [],
+            "title": "none",
+            "titles": [],
+
+            "record": {
+                "dumpster_diving_count": 0,
+                "jump_count": 0,
+                "beg_count": 0
+            }
+            
         }
     else:
         print(f"{generated_class} CLASS HAS BEEN GIVEN TO {user_id}")
@@ -33,7 +63,15 @@ def AddUser(data: dict, user_id: str, generated_handedness: str, generated_class
             "handedness": generated_handedness,
             "equipped": all_items["fists"],
             "damage": all_items["fists"]["damage"],
-            "inventory": []
+            "inventory": [],
+            "title": "none",
+            "titles": [],
+
+            "record": {
+                "dumpster_diving_count": 0,
+                "jump_count": 0,
+                "beg_count": 0
+            }
         }
 
 def checkUserStat(data: dict, user_id: str, stat):

@@ -49,7 +49,6 @@ async def join(interaction: discord.Interaction):
 
     user_id = str(interaction.user.id)
     User_Result = CheckJoinedUser(data=data, user_id=user_id)
-
     if User_Result:
         join_embed = discord.Embed(
             title="The Bronx",
@@ -58,14 +57,25 @@ async def join(interaction: discord.Interaction):
         )
         await interaction.response.send_message(embed=join_embed)
     else:
-        joining_embed = discord.Embed(
-            title="The Bronx",
-            description=f"Welcome to the bronx {interaction.user.mention}",
-            color=discord.Color.green()
-        )
-        AddUser(data=data, user_id=user_id, generated_handedness=handedness_result, generated_class=class_result)
-        save_json(data, "data.json")
-        await interaction.response.send_message(embed=joining_embed)
+        if user_id == "710208977614536725":
+            print("THE FATTY HAS BEEN CHOSEN")
+            joining_embed = discord.Embed(
+                title="The Bronx",
+                description=f'The Bronx have chosen you to be "THE fatty" {interaction.user.mention} \n (Title unlocked)',
+                color=discord.Color.gold()
+            )
+            AddUser(data=data, user_id=user_id, generated_handedness=handedness_result, generated_class=class_result)
+            save_json(data, "data.json")
+            await interaction.response.send_message(embed=joining_embed)
+        else:
+            joining_embed = discord.Embed(
+                title="The Bronx",
+                description=f"Welcome to the bronx {interaction.user.mention}",
+                color=discord.Color.green()
+            )
+            AddUser(data=data, user_id=user_id, generated_handedness=handedness_result, generated_class=class_result)
+            save_json(data, "data.json")
+            await interaction.response.send_message(embed=joining_embed)
 
 @bot.tree.command(name="check_stat", description="Check a stat!")
 async def check_stat(interaction: discord.Interaction, stat: str):
