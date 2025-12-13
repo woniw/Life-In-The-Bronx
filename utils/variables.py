@@ -59,7 +59,7 @@ dumpster_dive_item_chances = {
         "type": "item"
     },
     "Burger": {
-        "weight": 2000,
+        "weight": 15,
         "type": "item"
     },
 
