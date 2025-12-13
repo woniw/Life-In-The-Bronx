@@ -16,9 +16,15 @@ from utils.DisplayStat import showItemDescription
 from utils.adminCommands import addMoney
 from utils.adminCommands import setMoney
 
+from utils.adminCommands import giveMoney
+
 from utils.GenerateStats import generatedClass
 from utils.GenerateStats import generatedHandedness
 
+from utils.moneyCommands import dumpsterDive
+
+from utils.useItems import equipWeapon
+from utils.useItems import eatConsumable
 
 data = load_json("data.json")
 
@@ -41,9 +47,17 @@ async def on_ready():
     except Exception as e:
         print(f"Failed to sync commands: {e}")
 
+@bot.tree.error
+async def on_app_command_error(interaction, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await interaction.response.send_message(
+            f"The Bronx is telling you to wait {error.retry_after:.1f}s",
+            ephemeral=True
+        )
 
 @bot.tree.command(name="join", description="Join The bronx!")
 async def join(interaction: discord.Interaction):
+    print("JOIN COMMAND HAS BEEN USED")
     handedness_result = generatedHandedness()
     class_result = generatedClass()
 
@@ -105,7 +119,7 @@ async def check_stat(interaction: discord.Interaction, stat: str):
             )
             await interaction.response.send_message(embed=invalid_stat_embed)
     else:
-        await interaction.response.send_message(f"You Have Not Joined The Bronx, Please us /join")
+        await interaction.response.send_message(f"You Have Not Joined The Bronx, Please use /join")
 
 @bot.tree.command(name="check_description", description="See the description of a certain item")
 async def check_description(interaction: discord.Interaction, item: str):
@@ -122,6 +136,106 @@ async def check_description(interaction: discord.Interaction, item: str):
         )
 
         await interaction.response.send_message(embed=item_desciption_embed)
+
+
+#economy
+@bot.tree.command(name="dive", description="Go dumpster diving!")
+@commands.cooldown(1, 5, commands.BucketType.user)
+async def dive(interaction: discord.Interaction):
+    user_id = str(interaction.user.id)
+    User_Result = CheckJoinedUser(data=data, user_id=user_id)
+
+    if User_Result:
+        reward, message = dumpsterDive(user_id=user_id, data=data)
+        save_json(data, "data.json")
+        result_embed = discord.Embed(
+            title="Dumpster Diving",
+            description=f"{message} {reward}",
+            color=discord.Color.dark_embed()
+        )
+        await interaction.response.send_message(embed=result_embed)
+    else:
+        await interaction.response.send_message(f"You Have Not Joined The Bronx, Please use /join")
+
+@bot.tree.command(name="give_money", description="bless up other members of the bronx with some of your own money")
+async def give_money(interaction: discord.Interaction, value: int, target: discord.Member):
+    user_id = str(interaction.user.id)
+    target_id = str(target.id)
+                                                #data: dict, user_id: str, amount: int, target: str
+    result = giveMoney(data=data, user_id=user_id, amount=value, target=target_id)    
+
+    print("")
+    print("| --- LOG --- |")
+    print(f"   USER ID: {user_id}")
+    print(f"   TARGET ID: {target_id}")
+    
+    print(f"- ADD MONEY FUNCTION, RETURNED: {result}")
+
+    if result == "Invalid Target":
+        await interaction.response.send_message("Target Hasn't Joined The Bronx💔")
+    elif result == "Invalid Balance":
+        await interaction.response.send_message("You dont have enough money, get your money up not your funny up")
+    elif result == "Successfull Transaction":
+        save_json(data, "data.json")
+        add_money_embed = discord.Embed(
+            title="**🤑 Cha-ching, Money Given! 🤑**",
+            description=f"💸{target} has been given ${value} from {interaction.user.mention}💸",
+            color=discord.Color.green(),
+        )
+        await interaction.response.send_message(embed=add_money_embed)
+
+@bot.tree.command(name="equip", description="Equip any weapon in your inventory")
+async def equip(interaction: discord.Interaction, weapon_name: str):
+    user_id = str(interaction.user.id)
+    User_Result = CheckJoinedUser(data=data, user_id=user_id)
+
+    if User_Result:
+        message, weapon_damage = equipWeapon(data=data, weapon=weapon_name, user_id=user_id)
+        save_json(data, "data.json")
+
+        if message == "Weapon does not exist":
+            response_embed = discord.Embed(
+                title="The Bronx",
+                description=f"{message}",
+                color=discord.Color.dark_gold()
+            )
+            await interaction.response.send_message(embed=response_embed)
+        elif message == "Weapon Has Been Equipped":
+            response_embed = discord.Embed(
+                title="The Bronx",
+                description=f"{message} \n New Damage: {weapon_damage}",
+                color=discord.Color.dark_gold()
+            )
+            await interaction.response.send_message(embed=response_embed)
+    else:
+        await interaction.response.send_message(f"You Have Not Joined The Bronx, Please use /join")
+
+
+@bot.tree.command(name="eat", description="Eat to restore health")
+async def equip(interaction: discord.Interaction, item: str):
+    user_id = str(interaction.user.id)
+    User_Result = CheckJoinedUser(data=data, user_id=user_id)
+
+    if User_Result:
+        message, new_health = eatConsumable(data=data, item=item, user_id=user_id)
+        save_json(data, "data.json")
+
+        if message == "Item does not exist":
+            response_embed = discord.Embed(
+                title="The Bronx",
+                description=f"{message}",
+                color=discord.Color.dark_gold()
+            )
+            await interaction.response.send_message(embed=response_embed)
+        elif message == "Item Has Been Eaten":
+            response_embed = discord.Embed(
+                title="The Bronx",
+                description=f"{message} \n New Health: {new_health}",
+                color=discord.Color.dark_gold()
+            )
+            await interaction.response.send_message(embed=response_embed)
+    else:
+        await interaction.response.send_message(f"You Have Not Joined The Bronx, Please use /join")
 
 #! admin commands
 @bot.tree.command(name="add_money", description="add money to a users balance (admin only)")

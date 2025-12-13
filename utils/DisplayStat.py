@@ -28,7 +28,8 @@ def showStat(requested_stat: str, user_id: str, data: dict):
         print("")
 
         if requested_stat == "equipped":
-            equipped_item = data["USERS"][user_id]["equipped"]["name"]
+            print("attempting to display equipped")
+            equipped_item = data["USERS"][user_id]["equipped"]
             return equipped_item
         
         elif requested_stat == "class":
@@ -38,7 +39,8 @@ def showStat(requested_stat: str, user_id: str, data: dict):
         elif requested_stat != "class":
             user_stat = data["USERS"][user_id][requested_stat]
             return user_stat
-        
+        else:
+            print("something is wrong")
     elif requested_stat not in player_stats:
         print("| --- LOG --- |")
         print("   Returning: 'Invalid Request'")

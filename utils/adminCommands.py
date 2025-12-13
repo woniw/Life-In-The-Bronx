@@ -1,6 +1,5 @@
 from utils.variables import admin_ids
 from utils.checkUser import CheckJoinedUser
-from utils.variables import player_classes
 
 def addMoney(data: dict, user_id: str, amount: int, target: str):
     target_joined_result = CheckJoinedUser(data=data, user_id=target)
@@ -23,7 +22,6 @@ def addMoney(data: dict, user_id: str, amount: int, target: str):
     else:
         return "Invalid Target"
 
-
 def setMoney(data: dict, user_id: str, amount: int, target: str):
     target_joined_result = CheckJoinedUser(data=data, user_id=target)
     target_balance = data["USERS"][target]["balance"]
@@ -44,5 +42,32 @@ def setMoney(data: dict, user_id: str, amount: int, target: str):
 
             return "Successfull Transaction", new_target_balance, target_balance
     else:
+        return "Invalid Target"
+    
+def giveMoney(data: dict, user_id: str, amount: int, target: str):
+    print('Running give money function')
+    user_id = str(user_id)
+    target_joined_result = CheckJoinedUser(data=data, user_id=target)
+    target_balance = int(data["USERS"][target]["balance"])
+
+    print(f"amount: {amount}")
+    print(f'user balance: {data["USERS"][user_id]["balance"]}')
+    print(f"target balance: {target_balance}")
+
+    if target_joined_result:
+        print("target has joined")
+        if amount > data["USERS"][user_id]["balance"]:
+            print('INVALID BALANCE')
+            return "Invalid Balance"
+        elif amount <= data["USERS"][user_id]["balance"]:
+            print("GIVING MONEY")
+            data["USERS"][target]["balance"] = data["USERS"][target]["balance"] + amount
+            data["USERS"][user_id]["balance"] = data["USERS"][user_id]["balance"] - amount
+            return "Successfull Transaction"
+        else:
+            print("FATAL ERROR")
+            return "something else"
+    else:
+        print('target hasnt joined')
         return "Invalid Target"
     

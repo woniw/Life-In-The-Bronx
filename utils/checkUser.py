@@ -8,20 +8,20 @@ def CheckJoinedUser(data: dict, user_id: str):
         print("USER IS ALREADY ADDED")
         return True
     elif user_id not in data["USERS"]:
-        print("USER IS NOT ADDED")
         return False
 
 def AddUser(data: dict, user_id: str, generated_handedness: str, generated_class: str):
     if user_id == "710208977614536725":
-        generated_class == "Fatty"
+        generated_class = "Fatty"
         print(f"THE fatty has joined")
         data["USERS"][user_id] = {
             "class": generated_class,
             "health": 100,
             "balance": 0,
             "handedness": generated_handedness,
-            "equipped": all_items["fists"]["name"],
-            "damage": all_items["fists"]["damage"],
+            "equipped": "Fists",
+            "damage": 5,
+            "durability": 999999999,
             "inventory": [],
             "title": "THE fatty",
             "titles": ["THE fatty"],
@@ -41,8 +41,9 @@ def AddUser(data: dict, user_id: str, generated_handedness: str, generated_class
             "health": tank_health,
             "balance": 0,
             "handedness": generated_handedness,
-            "equipped": all_items["fists"]["name"],
-            "damage": all_items["fists"]["damage"],
+            "equipped": "Fists",
+            "damage": 5,
+            "durability": 999999999,
             "inventory": [],
             "title": "none",
             "titles": [],
@@ -61,8 +62,9 @@ def AddUser(data: dict, user_id: str, generated_handedness: str, generated_class
             "health": default_health,
             "balance": 0,
             "handedness": generated_handedness,
-            "equipped": all_items["fists"],
-            "damage": all_items["fists"]["damage"],
+            "equipped": "Fists",
+            "damage": 5,
+            "durability": 999999999,
             "inventory": [],
             "title": "none",
             "titles": [],
