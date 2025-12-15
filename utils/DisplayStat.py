@@ -19,7 +19,6 @@ def showItemDescription(requested_item_description: str):
         return "Item Doesnt exist"
 
 
-
 def showStat(requested_stat: str, user_id: str, data: dict):
     if requested_stat in player_stats:
         print("")
@@ -45,3 +44,19 @@ def showStat(requested_stat: str, user_id: str, data: dict):
         print("| --- LOG --- |")
         print("   Returning: 'Invalid Request'")
         return "Invalid Request"
+    
+
+
+def showInventory(user_id: str, data: dict):
+    user_inventory_list = data["USERS"][user_id]["inventory"]
+    count = 0
+    full_inventory = ""
+
+    print("| --- USER INVENTORY --- |")
+    for items in user_inventory_list:
+        count = count + 1
+        full_inventory += f"**{count}**.{items}\n"
+
+
+    print(full_inventory)
+    return full_inventory

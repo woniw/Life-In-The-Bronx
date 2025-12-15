@@ -56,18 +56,26 @@ def eatConsumable(data: dict, item: str, user_id: str):
                 else:
                     user_health = data["USERS"][user_id]["health"] = health_after_consumed
                     return "Item Has Been Eaten", user_health
-            elif user_class != "Tank":
-                print("user is not a tank")
+            elif user_class == "Fatty":
+                print("user is not a fatty")
                 if health_after_consumed > 100 or health_after_consumed == 100:
                     user_health = data["USERS"][user_id]["health"] = 100
                     return "Item Has Been Eaten", user_health
                 
                 else:
+                    health_after_consumed = health_after_consumed + 10
                     user_health = data["USERS"][user_id]["health"] = health_after_consumed
                     return "Item Has Been Eaten", health_after_consumed
             else:
-                print("something is wrong")
-                return "Something is wrong"
+                print("user is not a fatty or tank")
+                if health_after_consumed > 100 or health_after_consumed == 100:
+                    user_health = data["USERS"][user_id]["health"] = 100
+                    return "Item Has Been Eaten", user_health
+                
+                else:
+                    health_after_consumed = health_after_consumed + 10
+                    user_health = data["USERS"][user_id]["health"] = health_after_consumed
+                    return "Item Has Been Eaten", health_after_consumed
         else:
             print("USER CANT EQUIP AN ITEM THEY DONT HAVE")
             return "You Can't Consume An Item You Don't Have"

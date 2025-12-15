@@ -12,6 +12,7 @@ from utils.checkUser import AddUser
 
 from utils.DisplayStat import showStat
 from utils.DisplayStat import showItemDescription
+from utils.DisplayStat import showInventory
 
 from utils.adminCommands import addMoney
 from utils.adminCommands import setMoney
@@ -236,6 +237,24 @@ async def equip(interaction: discord.Interaction, item: str):
             await interaction.response.send_message(embed=response_embed)
     else:
         await interaction.response.send_message(f"You Have Not Joined The Bronx, Please use /join")
+
+
+@bot.tree.command(name="inventory", description="Take a look in your inventory")
+async def inventory(interaction: discord.Interaction):
+    user_id = str(interaction.user.id)
+
+    full_inventory = showInventory(user_id=user_id, data=data)
+    User_Result = CheckJoinedUser(data=data, user_id=user_id)
+    if User_Result:
+        inventory_embed = discord.Embed(
+            title="🎒 Inventory 🎒",
+            description=full_inventory,
+            color=discord.Color.blurple()
+        )
+        await interaction.response.send_message(embed=inventory_embed)
+    else:
+        await interaction.response.send_message(f"You Have Not Joined The Bronx, Please use /join")
+
 
 #! admin commands
 @bot.tree.command(name="add_money", description="add money to a users balance (admin only)")
